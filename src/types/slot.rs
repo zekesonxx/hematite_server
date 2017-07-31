@@ -9,10 +9,10 @@ use packet::Protocol;
 
 #[derive(Debug)]
 pub struct Slot {
-    id: u16,
-    count: u8,
-    damage: i16,
-    tag: nbt::Blob
+    pub id: u16,
+    pub count: u8,
+    pub damage: i16,
+    pub tag: Option<nbt::Blob>
 }
 
 impl Protocol for Option<Slot> {
@@ -20,7 +20,11 @@ impl Protocol for Option<Slot> {
 
     fn proto_len(value: &Option<Slot>) -> usize {
         match *value {
-            Some(ref slot) => 2 + 1 + 2 + <nbt::Blob as Protocol>::proto_len(&slot.tag), // id, count, damage, tag
+            Some(ref slot) => if let Some(ref tag) = slot.tag {
+                    2 + 1 + 2 + <nbt::Blob as Protocol>::proto_len(&tag) // id, count, damage, tag
+                } else {
+                    2 + 1 + 2 + 1
+                },
             None => 2
         }
     }
@@ -31,7 +35,11 @@ impl Protocol for Option<Slot> {
                 try!(<i16 as Protocol>::proto_encode(&(id as i16), dst));
                 try!(<u8 as Protocol>::proto_encode(&count, dst));
                 try!(<i16 as Protocol>::proto_encode(&damage, dst));
-                try!(<nbt::Blob as Protocol>::proto_encode(tag, dst));
+                if let &Some(ref tag) = tag {
+                    try!(<nbt::Blob as Protocol>::proto_encode(&tag, dst))
+                } else {
+                    try!(<u8 as Protocol>::proto_encode(&0, dst))
+                }
             }
             None => { try!(<i16 as Protocol>::proto_encode(&-1, dst)) }
         }
@@ -47,7 +55,11 @@ impl Protocol for Option<Slot> {
                 id: id as u16,
                 count: try!(<u8 as Protocol>::proto_decode(src)),
                 damage: try!(<i16 as Protocol>::proto_decode(src)),
-                tag: try!(<nbt::Blob as Protocol>::proto_decode(src))
+                tag: if let Ok(tag) = <nbt::Blob as Protocol>::proto_decode(src) {
+                    Some(tag)
+                } else {
+                    None
+                }
             })
         })
     }

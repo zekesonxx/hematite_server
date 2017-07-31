@@ -199,8 +199,8 @@ impl World {
                 }
                 // 0x01 => ChatMessage { message: String }
                 Packet::ChatMessage(pkt) => {
-                    use packet::play::clientbound::{ChatMessage, PlayerAbilities};
-                    use types::ChatJson;
+                    use packet::play::clientbound::{ChatMessage, PlayerAbilities, SetSlot};
+                    use types::{ChatJson, Slot};
 
                     info!("0x01 ChatMessage - message={}", pkt.message);
 
@@ -220,6 +220,19 @@ impl World {
                                      walking_speed: 0.1,
                                  }
                                  .write(&mut stream));
+                        }
+                        "/cobble" => {
+                            try!(SetSlot {
+                                window_id: 0,
+                                slot: 36,
+                                data: Some(Slot {
+                                    id: 4,
+                                    count: 64,
+                                    damage: 0,
+                                    tag: None
+                                })
+                            }
+                            .write(&mut stream))
                         }
                         _ => {}
                     }
