@@ -8,6 +8,21 @@ This is the [Hematite][] server, an implementation of the [Minecraft][] server i
 
 The Hematite server is currently in very early stages of development and completely unusable.
 
+## Goalish Things
+* [ ] Split player connection out of world.rs
+* [ ] Load player state from disk
+* [ ] Save player state to disk
+* [ ] Command framework (using clap)
+* [ ] Item give command
+* [ ] Loading in any amount of world
+* [ ] Loading in world dynamically as needed
+
+Farther off things:
+
+* [ ] Ticks
+* [ ] Tab completion
+* [ ] Multiplayer
+
 ## Dependencies
 
 ![dependencies](./Cargo.png)
