@@ -136,3 +136,37 @@ impl ToJson for Color {
         self.as_ref().to_json()
     }
 }
+
+
+enum_protocol_impl!(Difficulty, u8, from_u8);
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Difficulty {
+    Peaceful = 0,
+    Easy = 1,
+    Medium = 2,
+    Hard = 3
+}
+
+impl FromPrimitive for Difficulty {
+    fn from_u64(n: u64) -> Option<Difficulty> {
+        match n {
+            0 => Some(Difficulty::Peaceful),
+            1 => Some(Difficulty::Easy),
+            2 => Some(Difficulty::Medium),
+            3 => Some(Difficulty::Hard),
+            _ => None
+        }
+    }
+    fn from_i64(n: i64) -> Option<Difficulty> {
+        match n {
+            0 => Some(Difficulty::Peaceful),
+            1 => Some(Difficulty::Easy),
+            2 => Some(Difficulty::Medium),
+            3 => Some(Difficulty::Hard),
+            _ => None
+        }
+    }
+}
+

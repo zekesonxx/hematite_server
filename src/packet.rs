@@ -329,7 +329,7 @@ pub mod play {
     pub mod clientbound {
         packets! {
         0x00 => KeepAlive { keep_alive_id: Var<i32> }
-        0x01 => JoinGame { entity_id: i32, gamemode: u8, dimension: Dimension, difficulty: u8, max_players: u8, level_type: String, reduced_debug_info: bool }
+        0x01 => JoinGame { entity_id: i32, gamemode: u8, dimension: Dimension, difficulty: Difficulty, max_players: u8, level_type: String, reduced_debug_info: bool }
         0x02 => ChatMessage { data: ChatJson, position: i8 }
         0x03 => TimeUpdate { world_age: i64, time_of_day: i64 }
         0x04 => EntityEquipment { entity_id: Var<i32>, slot: i16, item: Option<Slot> }

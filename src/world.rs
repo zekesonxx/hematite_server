@@ -53,7 +53,7 @@ impl World {
                  entity_id: 0,
                  gamemode: 0b0000, // 0: Survival, 1: Creative, 2: Adventure, 3: Spectator
                  dimension: Dimension::Overworld,
-                 difficulty: 2,
+                 difficulty: Difficulty::Medium,
                  max_players: 20,
                  level_type: "default".to_string(),
                  reduced_debug_info: false,
