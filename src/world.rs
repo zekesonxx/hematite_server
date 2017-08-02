@@ -203,12 +203,20 @@ impl World {
                                 flying_speed: 0.05,
                                 walking_speed: 0.1,
                             }.write(&mut stream)?;
+                            ChangeGameState {
+                                reason: 3,
+                                value: 0.0
+                            }.write(&mut stream)?;
                         }
                         "/gamemode c" => {
                             PlayerAbilities {
                                 flags: Gamemode::abilities(Gamemode::Creative),
                                 flying_speed: 0.05,
                                 walking_speed: 0.1
+                            }.write(&mut stream)?;
+                            ChangeGameState {
+                                reason: 3,
+                                value: 1.0
                             }.write(&mut stream)?;
                         }
                         "/cobble" => {
