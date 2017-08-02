@@ -51,7 +51,7 @@ impl World {
         // - Read some keypairs from server.properties
         try!(JoinGame {
                  entity_id: 0,
-                 gamemode: 0b0000, // 0: Survival, 1: Creative, 2: Adventure, 3: Spectator
+                 gamemode: Gamemode::Survival,
                  dimension: Dimension::Overworld,
                  difficulty: Difficulty::Medium,
                  max_players: 20,
@@ -198,20 +198,18 @@ impl World {
 
                     match pkt.message.trim() {
                         "/gamemode s" => {
-                            try!(PlayerAbilities {
-                                     flags: 0b0000, // god | can fly | flying | creative
-                                     flying_speed: 0.05,
-                                     walking_speed: 0.1,
-                                 }
-                                 .write(&mut stream));
+                            PlayerAbilities {
+                                flags: Gamemode::abilities(Gamemode::Survival),
+                                flying_speed: 0.05,
+                                walking_speed: 0.1,
+                            }.write(&mut stream)?;
                         }
                         "/gamemode c" => {
-                            try!(PlayerAbilities {
-                                     flags: 0b1101, // god | can fly | flying | creative
-                                     flying_speed: 0.05,
-                                     walking_speed: 0.1,
-                                 }
-                                 .write(&mut stream));
+                            PlayerAbilities {
+                                flags: Gamemode::abilities(Gamemode::Creative),
+                                flying_speed: 0.05,
+                                walking_speed: 0.1
+                            }.write(&mut stream)?;
                         }
                         "/cobble" => {
                             try!(SetSlot {

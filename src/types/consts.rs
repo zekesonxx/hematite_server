@@ -170,3 +170,51 @@ impl FromPrimitive for Difficulty {
     }
 }
 
+enum_protocol_impl!(Gamemode, u8, from_u8);
+
+#[repr(u8)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+//FIXME(zekesonxx): Doesn't support hardcode mode
+pub enum Gamemode {
+    Survival = 0,
+    Creative = 1,
+    Adventure = 2,
+    Spectator = 3
+}
+
+impl Gamemode {
+    /// Gets the bit flag of a gamemode
+    /// Used for the PlayerAbilities packet
+    pub fn abilities(me: Self) -> i8 {
+        use self::Gamemode::*;
+        match me {
+            // creative | can fly | flying | god
+            Survival => 0b0000,
+            Creative => 0b1101,
+            Adventure => 0b0001,
+            Spectator => 0b0101
+        }
+    }
+}
+
+impl FromPrimitive for Gamemode {
+    fn from_u64(n: u64) -> Option<Gamemode> {
+        match n {
+            0 => Some(Gamemode::Survival),
+            1 => Some(Gamemode::Creative),
+            2 => Some(Gamemode::Adventure),
+            3 => Some(Gamemode::Spectator),
+            _ => None
+        }
+    }
+    fn from_i64(n: i64) -> Option<Gamemode> {
+        match n {
+            0 => Some(Gamemode::Survival),
+            1 => Some(Gamemode::Creative),
+            2 => Some(Gamemode::Adventure),
+            3 => Some(Gamemode::Spectator),
+            _ => None
+        }
+    }
+}
+
