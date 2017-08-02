@@ -467,7 +467,19 @@ pub mod play {
         0x48 => ResourcePackSend { url: String, hash: String }
         0x49 => UpdateEntityNbt { entity_id: Var<i32>, tag: nbt::Blob }
     }
+        impl PluginMessage {
+            pub fn new<S: Into<String>, D: Into<Vec<u8>>>(channel: S, data: D) -> PluginMessage {
+                PluginMessage {
+                    channel: channel.into(),
+                    data: data.into()
+                }
+            }
+            pub fn register<S: Into<String>>(channel: S) -> PluginMessage {
+                PluginMessage::new("REGISTER", channel.into())
+            }
+        }
     }
+
     pub mod serverbound {
         packets! {
         0x00 => KeepAlive { keep_alive_id: Var<i32> }

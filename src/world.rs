@@ -73,19 +73,11 @@ impl World {
         debug!("<< PlayerAbilities");
 
         // WRITE `MC|Brand` plugin
-        try!(PluginMessage {
-                 channel: "MC|Brand".to_string(),
-                 data: b"hematite".to_vec(),
-             }
-             .write(&mut stream));
+        try!(PluginMessage::new("MC|Brand", "hematite").write(&mut stream));
         debug!("<< PluginMessage");
 
         // WRITE supported channels
-        try!(PluginMessage {
-                 channel: "REGISTER".to_string(),
-                 data: b"MC|Brand\0".to_vec(),
-             }
-             .write(&mut stream));
+        try!(PluginMessage::register("MC|Brand").write(&mut stream));
         debug!("<< PluginMessage");
 
         // FIXME(toqueteos): We need a chunk loader handling disk reads and
