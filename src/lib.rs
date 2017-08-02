@@ -1,5 +1,5 @@
 #![cfg_attr(test, deny(missing_docs, warnings))]
-#![forbid(unused_variables)]
+// #![forbid(unused_variables)]
 // #![feature(associated_type_defaults)]
 // #![feature(read_exact)]
 
